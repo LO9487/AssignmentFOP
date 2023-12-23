@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Database {
@@ -16,7 +17,46 @@ public class Database {
             e.printStackTrace();
         }
     }
+    public void updateScore(String email, int score) {
+        String query = "UPDATE users SET score = score + ? WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, score);
+            stmt.setString(2, email);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public int getScore(String email) {
+        String query = "SELECT score FROM users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("score");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public LocalDate getRegistrationDate(String email) {
+        String query = "SELECT registration_date FROM users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Date regDate = rs.getDate("registration_date");
+                    return regDate.toLocalDate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void addUser(String username, String email, String password) {
         try {
             // Insert the user into the database

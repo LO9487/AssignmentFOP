@@ -30,34 +30,34 @@ public class Main {
 
     public void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 600, 400);  // Increase the size of the frame
+        frame.setBounds(100, 100, 600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
 //        JLabel lblUsername = new JLabel("Username");
-//        lblUsername.setBounds(58, 104, 100, 14);  // Adjust these values as needed
+//        lblUsername.setBounds(58, 104, 100, 14);
 //        frame.getContentPane().add(lblUsername);
 //
 //        JTextField usernameField = new JTextField();
-//        usernameField.setBounds(168, 101, 86, 20);  // Adjust these values as needed
+//        usernameField.setBounds(168, 101, 86, 20);
 //        frame.getContentPane().add(usernameField);
 //        usernameField.setColumns(10);
 
         JLabel lblEmail = new JLabel("Email");
-        lblEmail.setBounds(58, 132, 100, 14);  // Increase the size of the label
+        lblEmail.setBounds(58, 132, 100, 14);
         frame.getContentPane().add(lblEmail);
 
         JLabel lblPassword = new JLabel("Password");
-        lblPassword.setBounds(58, 157, 100, 14);  // Increase the size of the label
+        lblPassword.setBounds(58, 157, 100, 14);
         frame.getContentPane().add(lblPassword);
 
         emailField = new JTextField();
-        emailField.setBounds(168, 129, 86, 20);  // Move the text field to the right
+        emailField.setBounds(168, 129, 86, 20);
         frame.getContentPane().add(emailField);
         emailField.setColumns(10);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(168, 154, 86, 20);  // Move the text field to the right
+        passwordField.setBounds(168, 154, 86, 20);
         frame.getContentPane().add(passwordField);
 
         JButton btnLogin = new JButton("Login");
@@ -122,7 +122,7 @@ public class Main {
             getContentPane().add(lblPassword);
 
             JLabel lblUsername = new JLabel("Username");
-            lblUsername.setBounds(58, 104, 100, 14);  // Increase the size of the label
+            lblUsername.setBounds(58, 104, 100, 14);
             getContentPane().add(lblUsername);
 
             usernameField = new JTextField();
@@ -176,7 +176,7 @@ public class Main {
             JButton btnDailyCheckin = new JButton("Daily Checkin");
             btnDailyCheckin.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int result = db.checkIn(email);  // You'll need to pass the user's email to the UserDashboard class
+                    int result = db.checkIn(email);
 
                     if (result == 0) {
                         JOptionPane.showMessageDialog(frame,  "You have checked in today.");
@@ -201,7 +201,8 @@ public class Main {
             JButton btnTriviaQuestion = new JButton("Trivia Question");
             btnTriviaQuestion.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // Add your logic here
+                    TriviaQuestion triviaQuestion = new TriviaQuestion(email,db);
+                    triviaQuestion.frame.setVisible(true);
                 }
             });
             getContentPane().add(btnTriviaQuestion);
