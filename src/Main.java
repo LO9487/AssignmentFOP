@@ -109,7 +109,7 @@ public class Main {
         private JPasswordField passwordField;
 
         public RegistrationPage() {
-            setBounds(100, 100, 450, 300);
+            setBounds(100, 100, 450, 400);
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             getContentPane().setLayout(null);
 
@@ -167,7 +167,7 @@ public class Main {
             this.email = email;
             setBounds(100, 100, 450, 300);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            getContentPane().setLayout(new GridLayout(5, 1));
+            getContentPane().setLayout(new GridLayout(6, 1));
 
             JLabel lblTitle = new JLabel("CodeForNature", SwingConstants.CENTER);
             lblTitle.setFont(new Font("Serif", Font.BOLD, 24));
@@ -213,6 +213,17 @@ public class Main {
                 }
             });
             getContentPane().add(btnDonations);
+
+            JButton btnLeaderBoard = new JButton("Global Leaderboard");
+            btnLeaderBoard.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // Add your logic here
+                }
+            });
+            getContentPane().add(btnLeaderBoard);
+
+
+
         }
     }
 

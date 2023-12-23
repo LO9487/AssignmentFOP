@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,23 @@ public class NewsSection extends JFrame {
         setBounds(100, 100, 600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
+
+        // Create a panel for the titles
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+
+        // Add the main title
+        JLabel mainTitle = new JLabel("News Section", SwingConstants.CENTER);
+        mainTitle.setFont(new Font("Serif", Font.BOLD, 24));
+        titlePanel.add(mainTitle);
+
+        // Add the subtitle
+        JLabel subTitle = new JLabel("Top 5 News about Nature", SwingConstants.CENTER);
+        subTitle.setFont(new Font("Serif", Font.BOLD, 18));
+        titlePanel.add(subTitle);
+
+        // Add the title panel to the north region of the content pane
+        getContentPane().add(titlePanel, BorderLayout.NORTH);
 
         list = new JList<>();
         JScrollPane scrollPane = new JScrollPane(list);
@@ -30,12 +49,40 @@ public class NewsSection extends JFrame {
             List<String> natureHeadlines = selectNews(readFile(filePath));
             Top5News(natureHeadlines);
 
-            // Display the news in the list
-            DefaultListModel<String> model = new DefaultListModel<>();
+            // Display the news in the JTextPane as HTML
+            JTextPane textPane = new JTextPane();
+            textPane.setContentType("text/html");
+            textPane.setEditable(false);
+            StringBuilder html = new StringBuilder("<html><body>");
             for (int i = 0; i < 5 && i < natureHeadlines.size(); i++) {
-                model.addElement("[" + (i + 1) + "]" + natureHeadlines.get(i));
+                String[] newsParts = natureHeadlines.get(i).split("\n");
+                if (newsParts.length == 3) {
+                    html.append("<p><b>[").append(i + 1).append("]</b> ")
+                            .append(newsParts[0])  // headline
+                            .append("<br><a href='").append(newsParts[1])  // URL
+                            .append("'>").append(newsParts[1]).append("</a><br>")  // Display the whole URL
+                            .append(newsParts[2])  // date
+                            .append("</p>");
+                }
             }
-            list.setModel(model);
+            html.append("</body></html>");
+            textPane.setText(html.toString());
+            textPane.addHyperlinkListener(new HyperlinkListener() {
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        if (Desktop.isDesktopSupported()) {
+                            try {
+                                Desktop.getDesktop().browse(e.getURL().toURI());
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            });
+
+            JScrollPane scrollPane = new JScrollPane(textPane);
+            getContentPane().add(scrollPane, BorderLayout.CENTER);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error reading from file:\n" + e.getMessage());
         }
