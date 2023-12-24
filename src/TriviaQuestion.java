@@ -176,11 +176,18 @@ public class TriviaQuestion {
     }
 
     private void displayQuestion(int questionNumber) {
+        List<String> choices = separateChoices(answers[questionNumber]);
+        Collections.shuffle(choices); // Shuffle the options
+        answers[questionNumber] = String.join(",", choices); // Update the answers with the shuffled options
+
+        // Find the new position of the correct answer after shuffling
+        int correctAnswerIndex = choices.indexOf(correctAnswers[questionNumber]);
+        correctAnswers[questionNumber] = String.valueOf(correctAnswerIndex);
+
         questionArea.setText("Day " + (questionNumber + 1) + " Trivia (Attempt #" + (attempts[questionNumber] + 1) + ")\n" +
                 "============================================================================\n" +
                 questions[questionNumber] + "\n" +
                 "============================================================================");
-        List<String> choices = separateChoices(answers[questionNumber]);
         char option = 'A';
         for (String choice : choices) {
             questionArea.append("\n[" + option + "] " + choice);
@@ -188,6 +195,10 @@ public class TriviaQuestion {
         }
         questionArea.append("\n============================================================================\n" +
                 "Enter your answer (A/B/C/D):");
+
+        // Force the GUI to refresh and display the new text
+        questionArea.repaint();
+        questionArea.revalidate();
     }
 
     private void submitAnswer(int questionNumber, String userAnswer, Database db) {
@@ -195,10 +206,10 @@ public class TriviaQuestion {
         List<String> choices = separateChoices(answers[questionNumber]);
         int answerIndex = userAnswer.toUpperCase().charAt(0) - 'A';
         String selectedOption = choices.get(answerIndex); // Get the selected option based on user's input
-        String correctAnswer = correctAnswers[questionNumber]; // Get the correct answer from the correctAnswers array
+        int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]); // Get the correct answer from the correctAnswers array
 
         int points =0;
-        if (selectedOption.equalsIgnoreCase(correctAnswer)) {
+        if (answerIndex == correctAnswerIndex) {
             if (!answeredCorrectly[questionNumber]) {  // Only update the score if the question hasn't been answered correctly yet
                 points = (attempts[questionNumber] == 1) ? 2 : 1;
                 db.updateScore(email, points);  // Update the score in the database
@@ -206,17 +217,29 @@ public class TriviaQuestion {
             }
             int totalScore = db.getScore(email);  // Retrieve the updated score
             if(attempts[questionNumber] == 1){
-            resultLabel.setText("Second Trial Correct! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");}
+                resultLabel.setText("Second Trial Correct! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");}
         } else {
             if (attempts[questionNumber] == 2) {
-                resultLabel.setText("Incorrect. The correct answer is: " + correctAnswer);
-            } else {
+                resultLabel.setText("Incorrect. The correct answer is: " + (char)('A' + correctAnswerIndex));
+            }
+            else if(attempts[questionNumber] > 2){
+                resultLabel.setText("You can try again but you wont get any marks.");
+            }
+
+            else {
                 resultLabel.setText("Incorrect. Try again.");
-                 // Update the answers with the shuffled options
+                // Update the answers with the shuffled options
             }
         }
-        Collections.shuffle(choices); // Shuffle the options
+        Collections.shuffle(choices);
         answers[questionNumber] = String.join(",", choices);
+
+        // Find the new position of the correct answer after shuffling
+        correctAnswerIndex = choices.indexOf(correctAnswers[questionNumber]);
+        correctAnswers[questionNumber] = String.valueOf(correctAnswerIndex);
+
+        // Display the next question with the shuffled options
+        displayQuestion(questionNumber);
     }
 
     public static int calculateDayCount(LocalDate userRegistrationDate, LocalDate currentDate) {
