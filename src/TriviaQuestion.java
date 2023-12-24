@@ -205,17 +205,18 @@ public class TriviaQuestion {
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
             }
             int totalScore = db.getScore(email);  // Retrieve the updated score
-            String trial = (attempts[questionNumber] == 1) ? "First" : "Second";
-            resultLabel.setText(trial + " Trial Correct! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");
+            if(attempts[questionNumber] == 1){
+            resultLabel.setText("Second Trial Correct! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");}
         } else {
             if (attempts[questionNumber] == 2) {
                 resultLabel.setText("Incorrect. The correct answer is: " + correctAnswer);
             } else {
                 resultLabel.setText("Incorrect. Try again.");
-                Collections.shuffle(choices); // Shuffle the options
-                answers[questionNumber] = String.join(",", choices); // Update the answers with the shuffled options
+                 // Update the answers with the shuffled options
             }
         }
+        Collections.shuffle(choices); // Shuffle the options
+        answers[questionNumber] = String.join(",", choices);
     }
 
     public static int calculateDayCount(LocalDate userRegistrationDate, LocalDate currentDate) {

@@ -1,6 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.util.regex.*;
 
@@ -34,7 +37,16 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
-//        JLabel lblUsername = new JLabel("Username");
+        ImageIcon imageIcon = new ImageIcon("Code_for_nature.png");
+        Image image = imageIcon.getImage(); // transform it
+        Image newimg = image.getScaledInstance(250, 150,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        JLabel label = new JLabel();
+        label.setIcon(imageIcon);
+        label.setBounds(40, 10, 600, 150);
+        frame.getContentPane().add(label);
+
+        //        JLabel lblUsername = new JLabel("Username");
 //        lblUsername.setBounds(58, 104, 100, 14);
 //        frame.getContentPane().add(lblUsername);
 //
