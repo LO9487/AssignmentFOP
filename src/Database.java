@@ -9,7 +9,7 @@ public class Database {
     public Database() {
         try {
             // Connect to the database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
 
             // Create a table for the users if it doesn't exist
             Statement stmt = conn.createStatement();
@@ -63,7 +63,7 @@ public class Database {
     public static int getCurrentPointForDonation(String username){
         int currentPoints=0;
         try{
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
             String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
