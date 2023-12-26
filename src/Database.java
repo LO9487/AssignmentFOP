@@ -100,11 +100,30 @@ public class Database {
     }
     public void addUser(String username, String email, String password) {
         try {
+            // Define the shift value for the Caesar cipher
+            int shift = 3;
+
+            // Define your 'alphabet' including special characters
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*() ";
+
+            // Apply the Caesar cipher to the password
+            StringBuilder cipherText = new StringBuilder();
+            for (int i = 0; i < password.length(); i++) {
+                int charPosition = alphabet.indexOf(password.charAt(i));
+                if (charPosition == -1) {
+                    throw new IllegalArgumentException("Invalid character in password");
+                }
+                int keyValue = (shift + charPosition) % alphabet.length();
+                char replaceVal = alphabet.charAt(keyValue);
+                cipherText.append(replaceVal);
+            }
+            String cipherPassword = cipherText.toString();
+
             // Insert the user into the database
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
             pstmt.setString(1, username);
             pstmt.setString(2, email);
-            pstmt.setString(3, password);  // In a real application, make sure to hash the password!
+            pstmt.setString(3, cipherPassword);  // Store the ciphered password
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,6 +132,25 @@ public class Database {
 
     public int checkUser(String email, String password) {
         try {
+            // Define the shift value for the Caesar cipher
+            int shift = 3;
+
+            // Define your 'alphabet' including special characters
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()";
+
+            // Apply the Caesar cipher to the password
+            StringBuilder cipherText = new StringBuilder();
+            for (int i = 0; i < password.length(); i++) {
+                int charPosition = alphabet.indexOf(password.charAt(i));
+                if (charPosition == -1) {
+                    throw new IllegalArgumentException("Invalid character in password");
+                }
+                int keyValue = (shift + charPosition) % alphabet.length();
+                char replaceVal = alphabet.charAt(keyValue);
+                cipherText.append(replaceVal);
+            }
+            String cipherPassword = cipherText.toString();
+
             // Check if the user exists in the database
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
             pstmt.setString(1, email);
@@ -120,7 +158,7 @@ public class Database {
 
             // If the query returns a result, the user exists
             if (rs.next()) {
-                if (rs.getString("password").equals(password)) {
+                if (rs.getString("password").equals(cipherPassword)) {
                     // Update the last login time
                     PreparedStatement pstmtUpdate = conn.prepareStatement("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE email = ?");
                     pstmtUpdate.setString(1, email);

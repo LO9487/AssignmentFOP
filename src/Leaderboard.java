@@ -238,7 +238,7 @@ class saveXP {
 
     public static void saveXpCPoint(String username, int newPoint,int newXp){
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
-            String query= "UPDATE user SET xp = ?,current_point=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
+            String query= "UPDATE user SET xp = ?,score=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setInt(1,newXp);
                 preparedStatement.setInt(2,newPoint);
@@ -256,7 +256,7 @@ class saveXP {
     public static int getCurrentXp(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
             String query="SELECT *FROM user WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
