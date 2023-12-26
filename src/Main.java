@@ -193,7 +193,7 @@ public class Main {
                     if (result == 0) {
                         JOptionPane.showMessageDialog(frame,  "You have checked in today.");
                     } else if (result > 0) {
-                        JOptionPane.showMessageDialog(frame, "Welcome , 1 score is added, you now have " + result);
+                        JOptionPane.showMessageDialog(frame, "Welcome , 1 score is added, you now have " + result+ " scores");
                     } else {
                         JOptionPane.showMessageDialog(frame, "An error occurred.");
                     }
@@ -246,7 +246,8 @@ public class Main {
             JButton btnLeaderBoard = new JButton("Global Leaderboard");
             btnLeaderBoard.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // Add your logic here
+                    Leaderboard leaderboard = new Leaderboard();
+                    leaderboard.setVisible(true);
                 }
             });
             getContentPane().add(btnLeaderBoard);

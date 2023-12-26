@@ -78,7 +78,7 @@ public class Leaderboard extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         leaderboard = new javax.swing.JTable();
         refresh = new javax.swing.JButton();
-        Back = new javax.swing.JButton();
+//        Back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,7 +118,7 @@ public class Leaderboard extends javax.swing.JFrame {
             }
         });
 
-        Back.setText("Back");
+//        Back.setText("Back");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,7 +135,8 @@ public class Leaderboard extends javax.swing.JFrame {
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(Back)))
+//                                                .addComponent(Back)
+                                        ))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -146,7 +147,7 @@ public class Leaderboard extends javax.swing.JFrame {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
-                                .addComponent(Back)
+//                                .addComponent(Back)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,7 +213,7 @@ public class Leaderboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
+//    private javax.swing.JButton Back;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -237,7 +238,7 @@ class saveXP {
     }
 
     public static void saveXpCPoint(String username, int newPoint,int newXp){
-        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "")){
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
             String query= "UPDATE user SET xp = ?,score=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setInt(1,newXp);
@@ -256,7 +257,7 @@ class saveXP {
     public static int getCurrentXp(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
             String query="SELECT *FROM user WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
@@ -280,7 +281,7 @@ class saveXP {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
+            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","Lojiakeng87");
             String query="SELECT *FROM user WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){

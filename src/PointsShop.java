@@ -43,7 +43,7 @@ public class PointsShop extends javax.swing.JFrame {
         Username = new javax.swing.JTextField();
 //        back = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
 
 //        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/11 (2).png"))); // NOI18N
@@ -196,7 +196,7 @@ public class PointsShop extends javax.swing.JFrame {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", " ");
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
             String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
