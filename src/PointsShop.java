@@ -176,7 +176,7 @@ public class PointsShop extends javax.swing.JFrame {
 
     public static void updatePoint(String username, int newPoint){
         try{
-            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", " ")){
                 String query= "UPDATE users SET score = ? WHERE username=?";
                 try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                     preparedStatement.setInt(1,newPoint);
@@ -196,7 +196,7 @@ public class PointsShop extends javax.swing.JFrame {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", " ");
             String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
@@ -226,7 +226,7 @@ public class PointsShop extends javax.swing.JFrame {
 
         try{
             // Class.forName("com.mysql.jdbc.Driver");
-            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", " ");
 
 
             String query="SELECT *FROM users WHERE username = ?";
