@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -28,6 +29,23 @@ public class Database {
         }
     }
 
+    public static void updatePointForDonation(String username, int newPoint){
+        try{
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
+                String query= "UPDATE users SET score = ? WHERE username=?";
+                try(PreparedStatement preparedStatement = con.prepareStatement(query)){
+                    preparedStatement.setInt(1,newPoint);
+                    preparedStatement.setString(2,username);
+                    preparedStatement.executeUpdate();
+                }
+            }
+            System.out.println("Point updated successfully");
+            JOptionPane.showMessageDialog(null, "Thank you for your donation, your point updated!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public int getScore(String email) {
         String query = "SELECT score FROM users WHERE email = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -41,6 +59,29 @@ public class Database {
         }
         return 0;
     }
+
+    public static int getCurrentPointForDonation(String username){
+        int currentPoints=0;
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            String query="SELECT *FROM users WHERE username = ?";
+
+            try(PreparedStatement preparedStatement = con.prepareStatement(query)){
+                preparedStatement.setString(1, username);
+                try(ResultSet resultSet = preparedStatement.executeQuery()){
+                    if(resultSet.next()){
+                        currentPoints = resultSet.getInt("score");
+
+                    }
+                }
+            }
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return currentPoints;
+    }
+
 
     public LocalDate getRegistrationDate(String email) {
         String query = "SELECT registration_date FROM users WHERE email = ?";
@@ -86,7 +127,8 @@ public class Database {
                     pstmtUpdate.executeUpdate();
 
                     return 0;  // User exists and password is correct
-                } else {
+                }
+                else {
                     return 1;  // User exists but password is incorrect
                 }
             }
@@ -142,7 +184,7 @@ public class Database {
                 e.printStackTrace();
             }
 
-            return -1;  // An error occurred
+            return -1;
         }
 }
 

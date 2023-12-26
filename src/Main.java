@@ -28,10 +28,10 @@ public class Main {
 
     public Main() {
         db = new Database();
-        initialize();
+        mainPage();
     }
 
-    public void initialize() {
+    public void mainPage() {
         frame = new JFrame();
         frame.setBounds(100, 100, 600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,7 +179,7 @@ public class Main {
             this.email = email;
             setBounds(100, 100, 450, 300);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            getContentPane().setLayout(new GridLayout(6, 1));
+            getContentPane().setLayout(new GridLayout(7, 1));
 
             JLabel lblTitle = new JLabel("CodeForNature", SwingConstants.CENTER);
             lblTitle.setFont(new Font("Serif", Font.BOLD, 24));
@@ -222,10 +222,26 @@ public class Main {
             JButton btnDonations = new JButton("Donations");
             btnDonations.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // Add your logic here
+                    Donation donation = new Donation(db);
+                    donation.setVisible(true);
                 }
             });
             getContentPane().add(btnDonations);
+
+
+            JButton btnPointsShop = new JButton("Points Shop");
+            btnPointsShop.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    PointsShop pointsShop = new PointsShop();
+                    pointsShop.setVisible(true);
+                }
+            });
+            getContentPane().add(btnPointsShop);
+
+
+
+
+
 
             JButton btnLeaderBoard = new JButton("Global Leaderboard");
             btnLeaderBoard.addActionListener(new ActionListener() {
