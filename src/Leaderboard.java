@@ -23,7 +23,7 @@ public class Leaderboard extends javax.swing.JFrame {
 
     private void populateLeaderboard(){
 
-        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
             java.sql.Statement s=con.createStatement()){
 
             // Query to retrieve user details, XP, and current points

@@ -233,7 +233,7 @@ public class Main {
             btnPointsShop.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     PointsShop pointsShop = new PointsShop();
-                    pointsShop.setVisible(true);
+
                 }
             });
             getContentPane().add(btnPointsShop);
