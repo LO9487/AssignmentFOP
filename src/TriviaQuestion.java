@@ -32,6 +32,7 @@ public class TriviaQuestion {
     private JTextField answerText;
     private String email;
     private boolean[] answeredCorrectly;
+    private String[] correctAnswerInWord;
 
 
     public TriviaQuestion(String email, Database db) {
@@ -56,7 +57,7 @@ public class TriviaQuestion {
         correctAnswers = new String[10]; // Initialize the correctAnswers array
         attempts = new int[10];
         answeredCorrectly = new boolean[10];
-
+        correctAnswerInWord = new String[10];
 
         loadQuestionsFromFile("TriviaSample.txt"); // Specify the file name here
 
@@ -97,7 +98,7 @@ public class TriviaQuestion {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                submitAnswer(currentQuestion, answerText.getText(),db); // Use answerText.getText() instead of answerField.getText()
+                submitAnswer(currentQuestion, answerText.getText(),db);
             }
         });
 
@@ -116,21 +117,30 @@ public class TriviaQuestion {
         int dayCount = calculateDayCount(userRegistrationDate, LocalDate.now());
         for (int i = 0; i < 10; i++) {
             questionButtons[i] = new JButton("Question " + (i + 1));
-            int finalI = i;
+            int numberI = i;
             if (i > dayCount) {
                 questionButtons[i].setEnabled(false);
             }
             questionButtons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    currentQuestion = finalI;
-                    displayQuestion(finalI);
+                    currentQuestion = numberI;
                     cardLayout.next(cards);
 
+                    if (e.getSource() == questionButtons[numberI]) {
+                        // Check if the button has been used before
+                        if (db.isButtonUsed(db.getUsername(email), numberI+1)) {
+                            displayQuestionOnly(numberI);
+                        } else {
+                            displayQuestion(numberI);
+                            // Mark the button as used
+                            db.setButtonUsed(db.getUsername(email), numberI+1);
+//                            questionButtons[numberI].setEnabled(false);
+                        }
+                    }
                 }
             });
             questionPanelMain.add(questionButtons[i]);
-
         }
 
         cards.add(questionPanelMain, "Question Page");
@@ -176,12 +186,14 @@ public class TriviaQuestion {
     }
 
     private void displayQuestion(int questionNumber) {
+        answerText.setEnabled(true);
         List<String> choices = separateChoices(answers[questionNumber]);
         Collections.shuffle(choices); // Shuffle the options
         answers[questionNumber] = String.join(",", choices); // Update the answers with the shuffled options
 
         // Find the new position of the correct answer after shuffling
         int correctAnswerIndex = choices.indexOf(correctAnswers[questionNumber]);
+        correctAnswerInWord[questionNumber] =  correctAnswers[questionNumber];
         correctAnswers[questionNumber] = String.valueOf(correctAnswerIndex);
 
         questionArea.setText("Day " + (questionNumber + 1) + " Trivia (Attempt #" + (attempts[questionNumber] + 1) + ")\n" +
@@ -199,46 +211,78 @@ public class TriviaQuestion {
         // Force the GUI to refresh and display the new text
         questionArea.repaint();
         questionArea.revalidate();
+        questionArea.setEditable(false);
+
+    }
+
+    private void displayQuestionOnly(int questionNumber) {
+        answerText.setEnabled(false);
+        List<String> choices = separateChoices(answers[questionNumber]);
+
+        questionArea.setText("Day " + (questionNumber + 1) + " Trivia (Attempt #" + (attempts[questionNumber] + 1) + ")\n" +
+                "============================================================================\n" +
+                questions[questionNumber] + "\n" +
+                "============================================================================");
+        char option = 'A';
+        for (String choice : choices) {
+            questionArea.append("\n[" + option + "] " + choice);
+            option++;
+        }
+        questionArea.append("\n============================================================================\n" +
+                "Enter your answer (A/B/C/D):");
+        int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]);
+
+        answerText.setText("Answer: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber]);
+        // Force the GUI to refresh and display the new text
+        questionArea.repaint();
+        questionArea.revalidate();
+        questionArea.setEditable(false);
+
     }
 
     private void submitAnswer(int questionNumber, String userAnswer, Database db) {
+        if (userAnswer.charAt(0) < 'A' || userAnswer.charAt(0)> 'D') {
+            resultLabel.setText("Invalid input. Please enter a letter between A and D.");
+            return;
+        }
         attempts[questionNumber]++;
         List<String> choices = separateChoices(answers[questionNumber]);
         int answerIndex = userAnswer.toUpperCase().charAt(0) - 'A';
         String selectedOption = choices.get(answerIndex); // Get the selected option based on user's input
         int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]); // Get the correct answer from the correctAnswers array
 
-        int points =0;
         if (answerIndex == correctAnswerIndex) {
             if (!answeredCorrectly[questionNumber]) {  // Only update the score if the question hasn't been answered correctly yet
-                points = (attempts[questionNumber] == 1) ? 2 : 1;
+                int points = (attempts[questionNumber] == 1) ? 2 : 1;
                 db.updateScore(email, points);  // Update the score in the database
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
-            }
-            int totalScore = db.getScore(email);  // Retrieve the updated score
-            if(attempts[questionNumber] == 1){
-                resultLabel.setText("Second Trial Correct! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");}
-        } else {
-            if (attempts[questionNumber] == 2) {
-                resultLabel.setText("Incorrect. The correct answer is: " + (char)('A' + correctAnswerIndex));
-            }
-            else if(attempts[questionNumber] > 2){
-                resultLabel.setText("You can try again but you wont get any marks.");
-            }
+                int totalScore = db.getScore(email);  // Retrieve the updated score
+                if(points ==2||points == 1){
+                resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");
 
-            else {
-                resultLabel.setText("Incorrect. Try again.");
-                // Update the answers with the shuffled options
+                }
+            } else {
+                resultLabel.setText("The correct answer is: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber] + ". You can try again but you will not get any marks.");
+            }
+        } else {
+            if (attempts[questionNumber] == 1) {
+                resultLabel.setText("Whoops, that doesn’t look right, try again!");
+            } else if (attempts[questionNumber] == 2) {
+                resultLabel.setText("Your answer is still incorrect, the correct answer is: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber]);
+            } else {
+                resultLabel.setText("The correct answer is: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber] + ". You can try again but you will not get any marks.");
             }
         }
+        String correctAnswer = choices.get(correctAnswerIndex);  // Save the correct answer string
+
         Collections.shuffle(choices);
         answers[questionNumber] = String.join(",", choices);
 
-        // Find the new position of the correct answer after shuffling
-        correctAnswerIndex = choices.indexOf(correctAnswers[questionNumber]);
-        correctAnswers[questionNumber] = String.valueOf(correctAnswerIndex);
+// Find the new position of the correct answer after shuffling
+        correctAnswerIndex = choices.indexOf(correctAnswer);
+        correctAnswers[questionNumber] = correctAnswer;
 
-        // Display the next question with the shuffled options
+// Display the next question with the shuffled options
         displayQuestion(questionNumber);
     }
 
@@ -247,5 +291,3 @@ public class TriviaQuestion {
         return (int) days;
     }
 }
-
-

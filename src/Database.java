@@ -9,7 +9,7 @@ public class Database {
     public Database() {
         try {
             // Connect to the database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
 
             // Create a table for the users if it doesn't exist
             Statement stmt = conn.createStatement();
@@ -31,7 +31,7 @@ public class Database {
 
     public static void updatePointForDonation(String username, int newPoint){
         try{
-            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "")){
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
                 String query= "UPDATE users SET score = ? WHERE username=?";
                 try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                     preparedStatement.setInt(1,newPoint);
@@ -63,7 +63,7 @@ public class Database {
     public static int getCurrentPointForDonation(String username){
         int currentPoints=0;
         try{
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
             String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
@@ -82,7 +82,20 @@ public class Database {
         return currentPoints;
     }
 
-
+    public String getUsername(String email) {
+        String query = "SELECT username FROM users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("username");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public LocalDate getRegistrationDate(String email) {
         String query = "SELECT registration_date FROM users WHERE email = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -130,6 +143,43 @@ public class Database {
         }
     }
 
+    public void initializeUserButtons(String username) {
+        try {
+            String sql = "INSERT INTO UserButtons (Username, Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8, Button9, Button10) VALUES (?, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void setButtonUsed(String username, int buttonId) {
+        try {
+            String sql = "UPDATE UserButtons SET button" + buttonId + " = TRUE WHERE Username = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isButtonUsed(String username, int buttonId) {
+        try {
+            String sql = "SELECT button" + buttonId + " FROM UserButtons WHERE Username = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            } else {
+                throw new IllegalArgumentException("Invalid username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public int checkUser(String email, String password) {
         try {
             // Define the shift value for the Caesar cipher
@@ -178,54 +228,50 @@ public class Database {
     }
     public int checkIn(String email) {
 
-            try {
-                // Get the last check-in date
-                PreparedStatement pstmt = conn.prepareStatement("SELECT last_checkin FROM users WHERE email = ?");
-                pstmt.setString(1, email);
-                ResultSet rs = pstmt.executeQuery();
+        try {
+            // Get the last check-in date
+            PreparedStatement pstmt = conn.prepareStatement("SELECT last_checkin FROM users WHERE email = ?");
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
 
-                if (rs.next()) {
-                    Date lastCheckin = rs.getDate("last_checkin");
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(System.currentTimeMillis());
-                    cal.set(Calendar.HOUR_OF_DAY, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.SECOND, 0);
-                    cal.set(Calendar.MILLISECOND, 0);
-                    java.sql.Date today = new java.sql.Date(cal.getTimeInMillis());
+            if (rs.next()) {
+                Date lastCheckin = rs.getDate("last_checkin");
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(System.currentTimeMillis());
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                java.sql.Date today = new java.sql.Date(cal.getTimeInMillis());
 //                    long millis=System.currentTimeMillis();
 //                    java.sql.Date today = new java.sql.Date(millis);
 //                    Date today = new Date(System.currentTimeMillis());
 
-                    // Check if the user has already checked in today
-                    if (lastCheckin != null && lastCheckin.equals(today)) {
-                        // User has already checked in today
-                        return 0;
-                    } else {
-                        // User hasn't checked in today, so increase the score and update the last check-in date
-                        PreparedStatement pstmtUpdate = conn.prepareStatement("UPDATE users SET score = score + 1, last_checkin = ? WHERE email = ?");
-                        pstmtUpdate.setDate(1, today);
-                        pstmtUpdate.setString(2, email);
-                        pstmtUpdate.executeUpdate();
+                // Check if the user has already checked in today
+                if (lastCheckin != null && lastCheckin.equals(today)) {
+                    // User has already checked in today
+                    return 0;
+                } else {
+                    // User hasn't checked in today, so increase the score and update the last check-in date
+                    PreparedStatement pstmtUpdate = conn.prepareStatement("UPDATE users SET score = score + 1, last_checkin = ? WHERE email = ?");
+                    pstmtUpdate.setDate(1, today);
+                    pstmtUpdate.setString(2, email);
+                    pstmtUpdate.executeUpdate();
 
-                        // Get the new score
-                        pstmt = conn.prepareStatement("SELECT score FROM users WHERE email = ?");
-                        pstmt.setString(1, email);
-                        rs = pstmt.executeQuery();
+                    // Get the new score
+                    pstmt = conn.prepareStatement("SELECT score FROM users WHERE email = ?");
+                    pstmt.setString(1, email);
+                    rs = pstmt.executeQuery();
 
-                        if (rs.next()) {
-                            return rs.getInt("score");
-                        }
+                    if (rs.next()) {
+                        return rs.getInt("score");
                     }
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-
-            return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return -1;
+    }
 }
-
-
-
-
