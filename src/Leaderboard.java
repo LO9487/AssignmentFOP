@@ -23,11 +23,11 @@ public class Leaderboard extends javax.swing.JFrame {
 
     private void populateLeaderboard(){
 
-        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
             java.sql.Statement s=con.createStatement()){
 
             // Query to retrieve user details, XP, and current points
-            String query ="SELECT username, current_point, xp FROM user ORDER BY xp DESC, xpLastUpdate ASC";
+            String query ="SELECT username, score, xp FROM users ORDER BY xp DESC, xpLastUpdate ASC";
             ResultSet rs = s.executeQuery(query);
 
 
@@ -134,7 +134,7 @@ public class Leaderboard extends javax.swing.JFrame {
                                                 .addGap(22, 22, 22)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addContainerGap()
+                                                        .addContainerGap()
 //                                                .addComponent(Back)
                                         ))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -238,8 +238,8 @@ class saveXP {
     }
 
     public static void saveXpCPoint(String username, int newPoint,int newXp){
-        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "")){
-            String query= "UPDATE user SET xp = ?,score=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
+            String query= "UPDATE users SET xp = ?,score=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setInt(1,newXp);
                 preparedStatement.setInt(2,newPoint);
@@ -257,8 +257,8 @@ class saveXP {
     public static int getCurrentXp(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "");
-            String query="SELECT *FROM user WHERE username = ?";
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setString(1, username);
@@ -281,14 +281,14 @@ class saveXP {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
-            String query="SELECT *FROM user WHERE username = ?";
+            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/jdbc-user","root","Lojiakeng87");
+            String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setString(1, username);
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
                     if(resultSet.next()){
-                        currentPoints = resultSet.getInt("current_point");
+                        currentPoints = resultSet.getInt("score");
 
                     }
                 }
@@ -302,8 +302,8 @@ class saveXP {
 
 
     public static void displayLeaderboard(){
-        String query ="SELECT username, current_point, xp FROM user ORDER BY xp DESC, xpLastUpdate ASC";
-        try(Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
+        String query ="SELECT username, score, xp FROM users ORDER BY xp DESC, xpLastUpdate ASC";
+        try(Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/jdbc-user","root","Lojiakeng87");
             java.sql.Statement s=con.createStatement();
             ResultSet rs=s.executeQuery(query)){
             System.out.println();
@@ -313,7 +313,7 @@ class saveXP {
             while(rs.next()){
                 String username=rs.getString("username");
                 int xp=rs.getInt("xp");
-                int cPoint=rs.getInt("current_point");
+                int cPoint=rs.getInt("score");
                 System.out.printf("%-15s%-18s%-9s",username,cPoint,xp);
                 System.out.println();
             }

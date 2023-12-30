@@ -1,1 +1,7 @@
 a plants a tree with the name "a"
+legend plants a tree with the name "legend"
+legend plants a tree with the name "legend"
+legend plants a tree with the name "leged"
+legend plants a tree with the name "leged"
+legend plants a tree with the name "leged"
+legend plants a tree with the name "leged"

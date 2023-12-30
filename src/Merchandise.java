@@ -74,14 +74,14 @@ public class Merchandise extends javax.swing.JFrame {
             }
         });
 
-//        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/image__1_-removebg-preview.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("image__1_-removebg-preview.png"))); // NOI18N
 
-//        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/image2-PhotoRoom.png-PhotoRoom (1).png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("image2-PhotoRoom.png-PhotoRoom (1).png"))); // NOI18N
 
-//        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/image3-PhotoRoom.png-PhotoRoom.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("image3-PhotoRoom.png-PhotoRoom.png"))); // NOI18N
         jLabel3.setText("jLabel3");
 
-//        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/image1-PhotoRoom.png-PhotoRoom (1).png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("image1-PhotoRoom.png-PhotoRoom (1).png"))); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
         jLabel5.setText("Merc- 1");

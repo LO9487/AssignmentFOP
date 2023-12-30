@@ -213,6 +213,7 @@ public class Main {
             JButton btnTriviaQuestion = new JButton("Trivia Question");
             btnTriviaQuestion.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    db.initializeUserButtons(db.getUsername(email));
                     TriviaQuestion triviaQuestion = new TriviaQuestion(email,db);
                     triviaQuestion.frame.setVisible(true);
                 }
@@ -246,7 +247,7 @@ public class Main {
             JButton btnLeaderBoard = new JButton("Global Leaderboard");
             btnLeaderBoard.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    Leaderboard leaderboard = new Leaderboard();
+                                      Leaderboard leaderboard = new Leaderboard();
                     leaderboard.setVisible(true);
                 }
             });

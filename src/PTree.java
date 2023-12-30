@@ -38,7 +38,7 @@ public class PTree extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
 
-//        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pos1/11 (2).png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("11 (1).png"))); // NOI18N
         jLabel2.setText("jLabel2");
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 36)); // NOI18N
@@ -168,8 +168,8 @@ public class PTree extends javax.swing.JFrame {
 
     public static void updatePoint(String username, int newPoint){
         try{
-            try(Connection con = DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","")){
-                String query= "UPDATE user SET current_point = ? WHERE username=?";
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
+                String query= "UPDATE users SET score = ? WHERE username=?";
                 try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                     preparedStatement.setInt(1,newPoint);
                     preparedStatement.setString(2,username);
@@ -188,14 +188,14 @@ public class PTree extends javax.swing.JFrame {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
-            String query="SELECT *FROM user WHERE username = ?";
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setString(1, username);
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
                     if(resultSet.next()){
-                        currentPoints = resultSet.getInt("current_point");
+                        currentPoints = resultSet.getInt("score");
 
                     }
                 }
@@ -218,10 +218,10 @@ public class PTree extends javax.swing.JFrame {
 
         try{
             // Class.forName("com.mysql.jdbc.Driver");
-            Connection con= DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
 
 
-            String query="SELECT *FROM user WHERE username = ?";
+            String query="SELECT *FROM users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setString(1,username);
@@ -230,7 +230,7 @@ public class PTree extends javax.swing.JFrame {
                 if(resultSet.next()){
 
                     int cPoint;
-                    cPoint = Integer.parseInt(resultSet.getString("current_point"));
+                    cPoint = Integer.parseInt(resultSet.getString("score"));
 
                     if(cPoint>=300){
 
