@@ -247,7 +247,7 @@ public class Main {
             JButton btnLeaderBoard = new JButton("Global Leaderboard");
             btnLeaderBoard.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                                      Leaderboard leaderboard = new Leaderboard();
+                    Leaderboard leaderboard = new Leaderboard();
                     leaderboard.setVisible(true);
                 }
             });

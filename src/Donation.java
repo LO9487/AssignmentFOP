@@ -193,10 +193,12 @@ public class Donation extends javax.swing.JFrame {
             System.err.println("Error saving check-in data: " + e.getMessage());
         }
 
-        int cPoint= Database.getCurrentPointForDonation(user);
-        int newPoint = cPoint + plusPoint;
-        Database.updatePointForDonation(user,newPoint);
+        Database db = new Database();
 
+        int cPoint= db.getCurrentPointForDonation(user);
+        int newPoint = cPoint + plusPoint;
+        db.updatePointForDonation(user,newPoint);
+        db.saveXp(user,plusPoint);
 
 
 //            this.dispose();

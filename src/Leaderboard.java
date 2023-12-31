@@ -233,26 +233,11 @@ class saveXP {
         int xp=getCurrentXp(user);
         int newXp=xp+20;//need modify plus how much
 
-        saveXpCPoint(user,newPoint,newXp);
+//        saveXpCPoint(user,newPoint,newXp);
         displayLeaderboard();
     }
 
-    public static void saveXpCPoint(String username, int newPoint,int newXp){
-        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
-            String query= "UPDATE users SET xp = ?,score=?, xpLastUpdate =CURRENT_TIMESTAMP WHERE username=?";
-            try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                preparedStatement.setInt(1,newXp);
-                preparedStatement.setInt(2,newPoint);
-                preparedStatement.setString(3,username);
-                preparedStatement.executeUpdate();
-            }
 
-            System.out.println("Point updated successfully");
-            System.out.println("Your current point: "+getCurrentPoint(username));
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
 
     public static int getCurrentXp(String username){
         int currentPoints=0;

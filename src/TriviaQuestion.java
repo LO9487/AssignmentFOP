@@ -255,6 +255,7 @@ public class TriviaQuestion {
             if (!answeredCorrectly[questionNumber]) {  // Only update the score if the question hasn't been answered correctly yet
                 int points = (attempts[questionNumber] == 1) ? 2 : 1;
                 db.updateScore(email, points);  // Update the score in the database
+                db.saveXpUseEmail(email,points);
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
                 int totalScore = db.getScore(email);  // Retrieve the updated score
                 if(points ==2||points == 1){
