@@ -59,7 +59,10 @@ public class TriviaQuestion {
         answeredCorrectly = new boolean[10];
         correctAnswerInWord = new String[10];
 
-        loadQuestionsFromFile("TriviaSample.txt"); // Specify the file name here
+        loadQuestionsFromFile("TriviaSample.txt");
+//        resetTrivia("TriviaSample.txt");
+
+        // Specify the file name here
 
         // Create panels for different components
         JPanel questionPanel = new JPanel(new BorderLayout());
@@ -230,14 +233,15 @@ public class TriviaQuestion {
         }
         questionArea.append("\n============================================================================\n" +
                 "Enter your answer (A/B/C/D):");
-        int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]);
 
-        answerText.setText("Answer: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber]);
+        // Find the index of the correct answer in the list of choices
+        int correctAnswerIndex = choices.indexOf(correctAnswers[questionNumber]);
+
+        answerText.setText("Answer: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswers[questionNumber]);
         // Force the GUI to refresh and display the new text
         questionArea.repaint();
         questionArea.revalidate();
         questionArea.setEditable(false);
-
     }
 
     private void submitAnswer(int questionNumber, String userAnswer, Database db) {
@@ -259,7 +263,7 @@ public class TriviaQuestion {
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
                 int totalScore = db.getScore(email);  // Retrieve the updated score
                 if(points ==2||points == 1){
-                resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");
+                    resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");
 
                 }
             } else {
@@ -291,4 +295,29 @@ public class TriviaQuestion {
         long days = ChronoUnit.DAYS.between(userRegistrationDate, currentDate) ;
         return (int) days;
     }
+
+    public void resetTrivia(String fileName) {
+        try (FileReader reader = new FileReader(fileName);
+             BufferedReader br = new BufferedReader(reader)) {
+
+            String line;
+            int questionIndex = 0;
+
+            while ((line = br.readLine()) != null && questionIndex < 10) {
+                String question = line;
+                String options = br.readLine();
+                String answer = br.readLine();
+                String blank = br.readLine();
+
+                questions[questionIndex] = question;
+                answers[questionIndex] = options; // Store the options in the answers array
+                correctAnswers[questionIndex] = answer; // Store the correct answer in the correctAnswers array
+
+                questionIndex++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

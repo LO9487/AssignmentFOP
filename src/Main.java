@@ -222,8 +222,11 @@ public class Main {
             JButton btnTriviaQuestion = new JButton("Trivia Question");
             btnTriviaQuestion.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+
                     db.initializeUserButtons(db.getUsername(email));
+
                     TriviaQuestion triviaQuestion = new TriviaQuestion(email,db);
+                    triviaQuestion.resetTrivia("TriviaSample.txt");
                     triviaQuestion.frame.setVisible(true);
                 }
             });
