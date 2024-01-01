@@ -179,11 +179,20 @@ public class Main {
             this.email = email;
             setBounds(100, 100, 450, 300);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            getContentPane().setLayout(new GridLayout(7, 1));
+            getContentPane().setLayout(new GridLayout(8, 1));
 
             JLabel lblTitle = new JLabel("CodeForNature", SwingConstants.CENTER);
             lblTitle.setFont(new Font("Serif", Font.BOLD, 24));
             getContentPane().add(lblTitle);
+
+            JButton btnUserAccount = new JButton("User Acount");
+            btnUserAccount.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    User user = new User(email);
+                    user.setVisible(true);
+                }
+            });
+            getContentPane().add(btnUserAccount);
 
             JButton btnDailyCheckin = new JButton("Daily Checkin");
             btnDailyCheckin.addActionListener(new ActionListener() {
