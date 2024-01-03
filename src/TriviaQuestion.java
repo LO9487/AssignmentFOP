@@ -111,6 +111,7 @@ public class TriviaQuestion {
                 cardLayout.previous(cards); // Go to the previous card
                 answerText.setText(""); // Clear the answer text field
                 resultLabel.setText(""); // Reset the result label
+                resetTrivia("TriviaSample.txt");
             }
         });
 
@@ -158,16 +159,29 @@ public class TriviaQuestion {
              BufferedReader br = new BufferedReader(reader)) {
 
             String line;
+            String question =null;
+            String option;
+            String answer;
             int questionIndex = 0;
 
             while ((line = br.readLine()) != null && questionIndex < 10) {
-                String question = line;
-                String options = br.readLine();
-                String answer = br.readLine();
-                String blank = br.readLine();
+//                In case the questions are in multiple lines
+                    String nextLine = br.readLine();
+                    if(nextLine.contains("?")){
+                        question= line +"\n"+ nextLine;
+                        option = br.readLine();}
+                    else{ option = nextLine;}
 
+//                    In case options in multiple lines
+                    String lineAfterQuestion = br.readLine();
+                    if(lineAfterQuestion.contains(",")||lineAfterQuestion.contains("character")){
+                        option = option + lineAfterQuestion;
+                        answer = br.readLine();
+                    }
+                    else{answer = lineAfterQuestion;}
+                    String blank = br.readLine();
                 questions[questionIndex] = question;
-                answers[questionIndex] = options; // Store the options in the answers array
+                answers[questionIndex] = option ;// Store the options in the answers array
                 correctAnswers[questionIndex] = answer; // Store the correct answer in the correctAnswers array
 
                 questionIndex++;
@@ -254,16 +268,20 @@ public class TriviaQuestion {
         int answerIndex = userAnswer.toUpperCase().charAt(0) - 'A';
         String selectedOption = choices.get(answerIndex); // Get the selected option based on user's input
         int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]); // Get the correct answer from the correctAnswers array
-
+        int points = 0;
         if (answerIndex == correctAnswerIndex) {
             if (!answeredCorrectly[questionNumber]) {  // Only update the score if the question hasn't been answered correctly yet
-                int points = (attempts[questionNumber] == 1) ? 2 : 1;
-                db.updateScore(email, points);  // Update the score in the database
-                db.saveXpUseEmail(email,points);
+//                int points = (attempts[questionNumber] == 1) ? 2 : 1;
+
+                if(attempts[questionNumber] == 1){points = 2;}
+                else if(attempts[questionNumber] == 2){points = 1;}
+                else if(attempts[questionNumber] >2){points = 0;}
+
+
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
                 int totalScore = db.getScore(email);  // Retrieve the updated score
                 if(points ==2||points == 1){
-                    resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore + " points.");
+                    resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore+points + " points.");
 
                 }
             } else {
@@ -278,6 +296,8 @@ public class TriviaQuestion {
                 resultLabel.setText("The correct answer is: [" + (char)('A' + correctAnswerIndex%26)+"]"+correctAnswerInWord[questionNumber] + ". You can try again but you will not get any marks.");
             }
         }
+        db.updateScore(email, points);  // Update the score in the database
+        db.saveXpUseEmail(email,points);
         String correctAnswer = choices.get(correctAnswerIndex);  // Save the correct answer string
 
         Collections.shuffle(choices);

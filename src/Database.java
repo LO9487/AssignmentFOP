@@ -316,7 +316,7 @@ public class Database {
                     rs = pstmt.executeQuery();
 
                     if (rs.next()) {
-                        return rs.getInt("score");
+                        return 1;
                     }
                 }
             }

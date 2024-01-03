@@ -202,7 +202,8 @@ public class Main {
                     if (result == 0) {
                         JOptionPane.showMessageDialog(frame,  "You have checked in today.");
                     } else if (result > 0) {
-                        JOptionPane.showMessageDialog(frame, "Welcome , 1 score is added, you now have " + result+ " scores");
+                        JOptionPane.showMessageDialog(frame, "Welcome , 1 score is added, you now have " + db.getScore(email)+ " scores");
+                                db.saveXpUseEmail(email,result);
                     } else {
                         JOptionPane.showMessageDialog(frame, "An error occurred.");
                     }

@@ -80,7 +80,7 @@ public class Leaderboard extends javax.swing.JFrame {
         refresh = new javax.swing.JButton();
 //        Back = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
