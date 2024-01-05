@@ -11,11 +11,6 @@ import javax.swing.JOptionPane;
 
 
 
-
-/**
- *
- * @author Chuimin
- */
 public class Merchandise extends javax.swing.JFrame {
 
     /**
