@@ -351,8 +351,9 @@ public class Merchandise extends javax.swing.JFrame {
 
     public static void updatePoint(String username, int newPoint){
         try{
-            try(Connection con = DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","")){
-                String query= "UPDATE user SET current_point = ? WHERE username=?";
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")
+            ){
+                String query= "UPDATE users SET score = ? WHERE username=?";
                 try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                     preparedStatement.setInt(1,newPoint);
                     preparedStatement.setString(2,username);
@@ -360,7 +361,7 @@ public class Merchandise extends javax.swing.JFrame {
                 }
             }
             System.out.println("Point updated successfully");
-            JOptionPane.showMessageDialog(null, "Tree successfully plant, your current point: "+getCurrentPoint(username));
+//            JOptionPane.showMessageDialog(null, "Tree successfully plant, your current point: "+getCurrentPoint(username));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -369,14 +370,14 @@ public class Merchandise extends javax.swing.JFrame {
     public static int getCurrentPoint(String username){
         int currentPoints=0;
         try{
-            Connection con =DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
-            String query="SELECT *FROM user WHERE username = ?";
+            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
+            String query="SELECT *FROM  users WHERE username = ?";
 
             try(PreparedStatement preparedStatement = con.prepareStatement(query)){
                 preparedStatement.setString(1, username);
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
                     if(resultSet.next()){
-                        currentPoints = resultSet.getInt("current_point");
+                        currentPoints = resultSet.getInt("score");
 
                     }
                 }

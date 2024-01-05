@@ -26,7 +26,7 @@ public class home extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         PlantTree = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        Back = new javax.swing.JButton();
+//        Back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 500));
@@ -65,19 +65,19 @@ public class home extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Showcard Gothic", 1, 36)); // NOI18N
         jLabel1.setText("Welcome To Point Shop!");
 
-        Back.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 14)); // NOI18N
-        Back.setText("Return");
-        Back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
-            }
-        });
+//        Back.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 14)); // NOI18N
+//        Back.setText("Return");
+//        Back.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                BackActionPerformed(evt);
+//            }
+//        });
 
         jDesktopPane1.setLayer(Merchandise, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(PlantTree, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(Back, javax.swing.JLayeredPane.DEFAULT_LAYER);
+//        jDesktopPane1.setLayer(Back, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -96,7 +96,8 @@ public class home extends javax.swing.JFrame {
                                                                         .addComponent(Merchandise, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                         .addGroup(jDesktopPane1Layout.createSequentialGroup()
                                                                 .addGap(337, 337, 337)
-                                                                .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+//                                                                .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        ))
                                                 .addContainerGap(261, Short.MAX_VALUE))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -117,7 +118,7 @@ public class home extends javax.swing.JFrame {
                                 .addGap(32, 32, 32)
                                 .addComponent(PlantTree, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(104, Short.MAX_VALUE))
         );
 
