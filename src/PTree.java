@@ -7,11 +7,15 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class PTree extends javax.swing.JFrame {
+    private static String email;
+    private static Database db;
+    private static String username;
+    public PTree(String email,Database db)
+    {
+        this.email=email;
+        this.db=db;
+        this.username=db.getUsername(email);
 
-    /**
-     * Creates new form PTree
-     */
-    public PTree() {
         initComponents();
     }
 
@@ -32,7 +36,7 @@ public class PTree extends javax.swing.JFrame {
         name = new javax.swing.JTextField();
         Redeem = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        Username = new javax.swing.JTextField();
+//        Username = new javax.swing.JTextField();
         back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -64,13 +68,13 @@ public class PTree extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        jLabel5.setText("Username :");
+//        jLabel5.setText("Username :");
 
-        Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsernameActionPerformed(evt);
-            }
-        });
+//        Username.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                UsernameActionPerformed(evt);
+//            }
+//        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -92,7 +96,8 @@ public class PTree extends javax.swing.JFrame {
                                                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                                                 .addComponent(jLabel5)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))))
+//                                                                                .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        )))
                                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                                 .addGap(27, 27, 27)
                                                                 .addComponent(jLabel4)
@@ -115,7 +120,7 @@ public class PTree extends javax.swing.JFrame {
                                                 .addComponent(jLabel3)
                                                 .addGap(29, 29, 29)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(18, 18, 18)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -211,7 +216,7 @@ public class PTree extends javax.swing.JFrame {
 
     private void RedeemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedeemActionPerformed
         // TODO add your handling code here:
-        String username=Username.getText();
+//        String username=Username.getText();
         String TreeName=name.getText();
 
 
@@ -237,7 +242,7 @@ public class PTree extends javax.swing.JFrame {
                         if("".equals(TreeName)||"".equals(username)){
                             JOptionPane.showMessageDialog(null, "Please fill in all the require part");
                             setVisible(false);
-                            new PTree().setVisible(true);
+                            new PTree(email,db).setVisible(true);
 
                         }else{
                             try(FileWriter writer =new FileWriter("TreePlantOrder.txt",true)){
@@ -252,13 +257,13 @@ public class PTree extends javax.swing.JFrame {
                     }else{
                         JOptionPane.showMessageDialog(null, "You have no enough point.");
                         setVisible(false);
-                        new PTree().setVisible(true);
+                        new PTree(email,db).setVisible(true);
                     }
 
                 }else{
                     JOptionPane.showMessageDialog(null, "Please enter correct username");
                     setVisible(false);
-                    new PTree().setVisible(true);
+                    new PTree(email,db).setVisible(true);
 
                 }
             }
@@ -277,7 +282,7 @@ public class PTree extends javax.swing.JFrame {
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         // TODO add your handling code here:
-        home homeFrame = new home();
+        home homeFrame = new home(email,db);
         homeFrame.setVisible(true);
         homeFrame.pack();
         homeFrame.setLocationRelativeTo(null);
@@ -314,7 +319,7 @@ public class PTree extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PTree().setVisible(true);
+                new PTree(email,db).setVisible(true);
             }
         });
     }

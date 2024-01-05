@@ -21,7 +21,13 @@ public class Merchandise extends javax.swing.JFrame {
     /**
      * Creates new form Merchandise
      */
-    public Merchandise() {
+    private static String email;
+    private static Database db;
+    private static String username;
+    public Merchandise(String email,Database db) {
+        this.email=email;
+        this.db=db;
+        this.username=db.getUsername(email);
         initComponents();
     }
 
@@ -51,7 +57,7 @@ public class Merchandise extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        Username = new javax.swing.JTextField();
+//        Username = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         quantity = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -113,14 +119,14 @@ public class Merchandise extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(187, 228, 246));
 
         jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel14.setText("Username :");
+//        jLabel14.setText("Username :");
 
-        Username.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsernameActionPerformed(evt);
-            }
-        });
+//        Username.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+//        Username.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                UsernameActionPerformed(evt);
+//            }
+//        });
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel15.setText("Merchandise want to redeem :");
@@ -173,7 +179,7 @@ public class Merchandise extends javax.swing.JFrame {
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(MercId, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(Address, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(319, 319, 319)
@@ -186,7 +192,8 @@ public class Merchandise extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                        .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                )
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,7 +329,7 @@ public class Merchandise extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        home homeFrame = new home();
+        home homeFrame = new home(email,db);
         homeFrame.setVisible(true);
         homeFrame.pack();
         homeFrame.setLocationRelativeTo(null);
@@ -384,65 +391,49 @@ public class Merchandise extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+
         String id=(String)MercId.getSelectedItem();
         String num =quantity.getText();
         String add =Address.getText();
-        String username=Username.getText();
 
 
-        if("".equals(num)||"".equals(add)||"".equals(username)){
+
+        if("".equals(num)||"".equals(add)){
             JOptionPane.showMessageDialog(null, "Please fill in all the require part");
             setVisible(false);
-            new Merchandise().setVisible(true);
+            new Merchandise(email,db).setVisible(true);
         }else{
-            try{
-
-                Connection con= DriverManager.getConnection("jdbc:MySQL://localhost:3308/user","root","");
-
-
-                String query="SELECT * FROM user WHERE username = ?";
-
-                try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                    preparedStatement.setString(1,username);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-
-                    if(resultSet.next()){
-
-                        int cPoint;
-                        int qty= Integer.parseInt(num);
-                        cPoint = Integer.parseInt(resultSet.getString("current_point"));
-                        if(cPoint>=qty*300){
-                            int newPoint =cPoint -(qty*300);
-
-                            updatePoint(username,newPoint);
-
-                            try (FileWriter Writer = new FileWriter("MerchandiseOrder.txt",true)){
-                                Writer.write(username+" orders " + num +" " + id + " to "+ add+ "\n");
-                                Writer.close();
-                                JOptionPane.showMessageDialog(null, "Order successfully made. Your point updated.\nCurrent point: "+resultSet.getString("current_point"));
-                                setVisible(false);
-                                new Merchandise().setVisible(true);
-                            }
-                        }else{
-                            JOptionPane.showMessageDialog(null, "You have no enough point");
-                            setVisible(false);
-                            new Merchandise().setVisible(true);
-                        }
-
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Please enter correct username");
-                        setVisible(false);
-                        new Merchandise().setVisible(true);
-                    }
+            int cPoint;
+            int qty= Integer.parseInt(num);
+            System.out.println(username);
+            cPoint = getCurrentPoint(username);
+            System.out.println(cPoint);
+            if(cPoint>=qty*300){
+                int newPoint =cPoint -(qty*300);
+                updatePoint(username,newPoint);
+                try (FileWriter Writer = new FileWriter("MerchandiseOrder.txt",true)){
+                    Writer.write(username+" orders " + num +" " + id + " to "+ add+ "\n");
+                    Writer.close();
+                    JOptionPane.showMessageDialog(null, "Order successfully made. Your point updated.\nCurrent point: "+getCurrentPoint(username));
+                    setVisible(false);
+                    new Merchandise(email,db).setVisible(true);
+                }catch(IOException e){
+                    System.out.println("Problem with file output");
                 }
-            }catch(HeadlessException | IOException | NumberFormatException | SQLException e){
-                System.out.println(e.getMessage());
+            }else{
+                JOptionPane.showMessageDialog(null, "You have no enough point");
+                setVisible(false);
+                new Merchandise(email,db).setVisible(true);
             }
+
         }
 
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+
+
 
     /**
      * @param args the command line arguments
@@ -474,7 +465,7 @@ public class Merchandise extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Merchandise().setVisible(true);
+                new Merchandise(email,db).setVisible(true);
             }
         });
     }
@@ -482,7 +473,7 @@ public class Merchandise extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Address;
     private javax.swing.JComboBox<String> MercId;
-    private javax.swing.JTextField Username;
+//    private javax.swing.JTextField Username;
     private javax.swing.JLabel address;
     private javax.swing.JButton back;
     private javax.swing.JButton jButton1;

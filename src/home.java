@@ -4,10 +4,14 @@ public class home extends javax.swing.JFrame {
     /**
      * Creates new form home
      */
-    public home() {
+    private String email;
+    private Database db;
+    public home(String email,Database db) {
+        this.email=email;
+        this.db=db;
+
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,7 +152,7 @@ public class home extends javax.swing.JFrame {
 
     private void MerchandiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MerchandiseActionPerformed
         // TODO add your handling code here:
-        Merchandise MercFrame = new Merchandise();
+        Merchandise MercFrame = new Merchandise(email,db);
         MercFrame.setVisible(true);
         MercFrame.pack();
         MercFrame.setLocationRelativeTo(null);
@@ -157,7 +161,7 @@ public class home extends javax.swing.JFrame {
 
     private void PlantTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlantTreeActionPerformed
         // TODO add your handling code here:
-        PTree PTreeFrame = new PTree();
+        PTree PTreeFrame = new PTree(email,db);
         PTreeFrame.setVisible(true);
         PTreeFrame.pack();
         PTreeFrame.setLocationRelativeTo(null);

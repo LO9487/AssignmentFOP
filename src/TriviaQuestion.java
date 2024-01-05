@@ -281,7 +281,7 @@ public class TriviaQuestion {
                 answeredCorrectly[questionNumber] = true;  // Mark the question as answered correctly
                 int totalScore = db.getScore(email);  // Retrieve the updated score
                 if(points ==2||points == 1){
-                    resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + totalScore+points + " points.");
+                    resultLabel.setText("Congratulations! You answered it correctly. You have been awarded " + points + " points, you now have " + (totalScore+points) + " points.");
 
                 }
             } else {
@@ -297,7 +297,7 @@ public class TriviaQuestion {
             }
         }
         db.updateScore(email, points);  // Update the score in the database
-        db.saveXpUseEmail(email,points);
+        db.saveXp(db.getUsername(email),points);
         String correctAnswer = choices.get(correctAnswerIndex);  // Save the correct answer string
 
         Collections.shuffle(choices);

@@ -5,10 +5,11 @@ import javax.swing.*;
 
 public class Donation extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Donation
-     */
-    public Donation( Database db) {
+ private Database db;
+ private static String email;
+    public Donation( String email,Database db) {
+        this.email=email;
+        this.db=db;
         initComponents();
     }
 
@@ -30,7 +31,7 @@ public class Donation extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jlabel = new javax.swing.JLabel();
         amount1 = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
+//        username = new javax.swing.JTextField();
         amount = new javax.swing.JTextField();
         Ngo = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
@@ -99,7 +100,7 @@ public class Donation extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 204));
-        jLabel2.setText("Username: ");
+//        jLabel2.setText("Username: ");
 
         jlabel.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jlabel.setForeground(new java.awt.Color(255, 255, 204));
@@ -136,7 +137,9 @@ public class Donation extends javax.swing.JFrame {
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(Ngo, 0, 261, Short.MAX_VALUE)
                                                         .addComponent(amount)
-                                                        .addComponent(username)))
+//                                                        .addComponent(username)
+                                                        )
+                                        )
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                                 .addGap(165, 165, 165)
                                                 .addComponent(jButton1)))
@@ -149,7 +152,8 @@ public class Donation extends javax.swing.JFrame {
                                 .addGap(120, 120, 120)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        )
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -179,7 +183,8 @@ public class Donation extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String user=username.getText();
+        Database db = new Database();
+        String user=db.getUsername(email);
         String amt=amount.getText();
         String ngo=(String)Ngo.getSelectedItem();
         double donate= Integer.parseInt(amt)*90.0/100;
@@ -193,11 +198,10 @@ public class Donation extends javax.swing.JFrame {
             System.err.println("Error saving check-in data: " + e.getMessage());
         }
 
-        Database db = new Database();
 
-        int cPoint= db.getCurrentPointForDonation(user);
+        int cPoint= Database.getCurrentPointForDonation(user);
         int newPoint = cPoint + plusPoint;
-        db.updatePointForDonation(user,newPoint);
+        Database.updatePointForDonation(user,newPoint);
         db.saveXp(user,plusPoint);
 
 
@@ -247,7 +251,7 @@ public class Donation extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Database db = new Database();
-                new Donation(db).setVisible(true);
+                new Donation(email,db).setVisible(true);
             }
         });
     }
@@ -265,6 +269,6 @@ public class Donation extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel jlabel;
-    private javax.swing.JTextField username;
+//    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

@@ -159,8 +159,10 @@ public class Main {
                     String username = usernameField.getText();
 
                     if (isValidEmail(email)) {
-                        db.addUser(username,email, password);
-                        dispose();  // Close the registration page
+                        if (!db.isEmailRegistered(email)) {
+                            db.addUser(username, email, password);
+                            dispose();  // Close the registration page
+                        }
                     } else {
                         // Email is invalid
                     }
@@ -198,12 +200,14 @@ public class Main {
             btnDailyCheckin.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int result = db.checkIn(email);
+                    if (result == 1) {
+                        db.saveXp(db.getUsername(email), result);
+                    }
 
                     if (result == 0) {
                         JOptionPane.showMessageDialog(frame,  "You have checked in today.");
-                    } else if (result > 0) {
+                    } else if (result ==1) {
                         JOptionPane.showMessageDialog(frame, "Welcome , 1 score is added, you now have " + db.getScore(email)+ " scores");
-                                db.saveXpUseEmail(email,result);
                     } else {
                         JOptionPane.showMessageDialog(frame, "An error occurred.");
                     }
@@ -236,7 +240,7 @@ public class Main {
             JButton btnDonations = new JButton("Donations");
             btnDonations.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    Donation donation = new Donation(db);
+                    Donation donation = new Donation(email,db);
                     donation.setVisible(true);
                 }
             });
@@ -246,7 +250,7 @@ public class Main {
             JButton btnPointsShop = new JButton("Points Shop");
             btnPointsShop.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    PointsShop pointsShop = new PointsShop();
+                    PointsShop pointsShop = new PointsShop(email,db);
 
                 }
             });
