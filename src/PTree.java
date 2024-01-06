@@ -215,14 +215,12 @@ public class PTree extends javax.swing.JFrame {
 
 
     private void RedeemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedeemActionPerformed
-        // TODO add your handling code here:
-//        String username=Username.getText();
         String TreeName=name.getText();
 
 
 
         try{
-            // Class.forName("com.mysql.jdbc.Driver");
+            
             Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
 
 
