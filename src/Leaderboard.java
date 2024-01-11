@@ -32,11 +32,11 @@ public class Leaderboard extends javax.swing.JFrame {
 
 
             int rank = 1;
-            int index = 0;
+            int index = 1;
             DefaultTableModel model = (DefaultTableModel)leaderboard.getModel();
             model.setRowCount(0);
 
-            while(rs.next()&&index<20){
+            while(rs.next()&&index<21){
                 model.addRow(new String[]{Integer.toString(index),rs.getString(1),Integer.toString(rs.getInt(2)),Integer.toString(rs.getInt(3))});
                 index++;
                 rank++;
