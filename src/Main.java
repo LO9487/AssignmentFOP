@@ -163,8 +163,6 @@ public class Main {
                             db.addUser(username, email, password);
                             dispose();  // Close the registration page
                         }
-                    } else {
-                        // Email is invalid
                     }
                 }
             });

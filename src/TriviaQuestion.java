@@ -214,15 +214,15 @@ public class TriviaQuestion {
         correctAnswers[questionNumber] = String.valueOf(correctAnswerIndex);
 
         questionArea.setText("Day " + (questionNumber + 1) + " Trivia (Attempt #" + (attempts[questionNumber] + 1) + ")\n" +
-                "============================================================================\n" +
+                "======================================================================================================\n" +
                 questions[questionNumber] + "\n" +
-                "============================================================================");
+                "======================================================================================================");
         char option = 'A';
         for (String choice : choices) {
             questionArea.append("\n[" + option + "] " + choice);
             option++;
         }
-        questionArea.append("\n============================================================================\n" +
+        questionArea.append("\n======================================================================================================\n" +
                 "Enter your answer (A/B/C/D):");
 
         // Force the GUI to refresh and display the new text
@@ -237,15 +237,15 @@ public class TriviaQuestion {
         List<String> choices = separateChoices(answers[questionNumber]);
 
         questionArea.setText("Day " + (questionNumber + 1) + " Trivia (Attempt #" + (attempts[questionNumber] + 1) + ")\n" +
-                "============================================================================\n" +
+                "======================================================================================================\n" +
                 questions[questionNumber] + "\n" +
-                "============================================================================");
+                "======================================================================================================");
         char option = 'A';
         for (String choice : choices) {
             questionArea.append("\n[" + option + "] " + choice);
             option++;
         }
-        questionArea.append("\n============================================================================\n" +
+        questionArea.append("\n======================================================================================================\n" +
                 "Enter your answer (A/B/C/D):");
 
         // Find the index of the correct answer in the list of choices
@@ -270,7 +270,8 @@ public class TriviaQuestion {
         int correctAnswerIndex = Integer.parseInt(correctAnswers[questionNumber]); // Get the correct answer from the correctAnswers array
         int points = 0;
         if (answerIndex == correctAnswerIndex) {
-            if (!answeredCorrectly[questionNumber]) {  // Only update the score if the question hasn't been answered correctly yet
+            if (!answeredCorrectly[questionNumber]) {
+                // Only update the score if the question hasn't been answered correctly yet
 //                int points = (attempts[questionNumber] == 1) ? 2 : 1;
 
                 if(attempts[questionNumber] == 1){points = 2;}
