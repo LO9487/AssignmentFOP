@@ -324,45 +324,6 @@ public class Merchandise extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_AddressActionPerformed
 
-    public static void updatePoint(String username, int newPoint){
-        try{
-            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")
-            ){
-                String query= "UPDATE users SET score = ? WHERE username=?";
-                try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                    preparedStatement.setInt(1,newPoint);
-                    preparedStatement.setString(2,username);
-                    preparedStatement.executeUpdate();
-                }
-            }
-            System.out.println("Point updated successfully");
-//            JOptionPane.showMessageDialog(null, "Tree successfully plant, your current point: "+getCurrentPoint(username));
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static int getCurrentPoint(String username){
-        int currentPoints=0;
-        try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
-            String query="SELECT *FROM  users WHERE username = ?";
-
-            try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                preparedStatement.setString(1, username);
-                try(ResultSet resultSet = preparedStatement.executeQuery()){
-                    if(resultSet.next()){
-                        currentPoints = resultSet.getInt("score");
-
-                    }
-                }
-            }
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return currentPoints;
-    }
 
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -382,15 +343,16 @@ public class Merchandise extends javax.swing.JFrame {
             int cPoint;
             int qty= Integer.parseInt(num);
             System.out.println(username);
-            cPoint = getCurrentPoint(username);
+            cPoint = Database.getCurrentPointForDonation(username);
             System.out.println(cPoint);
             if(cPoint>=qty*300){
                 int newPoint =cPoint -(qty*300);
-                updatePoint(username,newPoint);
+
+                Database.updatePointForDonation(username,newPoint);
                 try (FileWriter Writer = new FileWriter("MerchandiseOrder.txt",true)){
                     Writer.write(username+" orders " + num +" " + id + " to "+ add+ "\n");
                     Writer.close();
-                    JOptionPane.showMessageDialog(null, "Order successfully made. Your point updated.\nCurrent point: "+getCurrentPoint(username));
+                    JOptionPane.showMessageDialog(null, "Order successfully made. Your point updated.\nCurrent point: "+Database.getCurrentPointForDonation(username));
                     setVisible(false);
                     new Merchandise(email,db).setVisible(true);
                 }catch(IOException e){

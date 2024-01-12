@@ -46,15 +46,6 @@ public class Main {
         label.setBounds(40, 10, 600, 150);
         frame.getContentPane().add(label);
 
-        //        JLabel lblUsername = new JLabel("Username");
-//        lblUsername.setBounds(58, 104, 100, 14);
-//        frame.getContentPane().add(lblUsername);
-//
-//        JTextField usernameField = new JTextField();
-//        usernameField.setBounds(168, 101, 86, 20);
-//        frame.getContentPane().add(usernameField);
-//        usernameField.setColumns(10);
-
         JLabel lblEmail = new JLabel("Email");
         lblEmail.setBounds(58, 132, 100, 14);
         frame.getContentPane().add(lblEmail);
@@ -125,6 +116,8 @@ public class Main {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             getContentPane().setLayout(null);
 
+            setTitle("Registration");
+
             JLabel lblEmail = new JLabel("Email");
             lblEmail.setBounds(58, 132, 46, 14);
             getContentPane().add(lblEmail);
@@ -185,7 +178,7 @@ public class Main {
             lblTitle.setFont(new Font("Serif", Font.BOLD, 24));
             getContentPane().add(lblTitle);
 
-            JButton btnUserAccount = new JButton("User Acount");
+            JButton btnUserAccount = new JButton("User Account");
             btnUserAccount.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     User user = new User(email);

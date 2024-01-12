@@ -147,46 +147,6 @@ public class PTree extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameActionPerformed
 
-    public static void updatePoint(String username, int newPoint){
-        try{
-            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
-                String query= "UPDATE users SET score = ? WHERE username=?";
-                try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                    preparedStatement.setInt(1,newPoint);
-                    preparedStatement.setString(2,username);
-                    preparedStatement.executeUpdate();
-                }
-            }
-            System.out.println("Point updated successfully");
-            JOptionPane.showMessageDialog(null, "Tree successfully plant, your current point: "+getCurrentPoint(username));
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-
-
-    public static int getCurrentPoint(String username){
-        int currentPoints=0;
-        try{
-            Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87");
-            String query="SELECT *FROM users WHERE username = ?";
-
-            try(PreparedStatement preparedStatement = con.prepareStatement(query)){
-                preparedStatement.setString(1, username);
-                try(ResultSet resultSet = preparedStatement.executeQuery()){
-                    if(resultSet.next()){
-                        currentPoints = resultSet.getInt("score");
-
-                    }
-                }
-            }
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return currentPoints;
-    }
 
 
 
@@ -226,7 +186,7 @@ public class PTree extends javax.swing.JFrame {
                                 writer.close();
                                 int newPoint=cPoint-300;
 
-                                updatePoint(username,newPoint);
+                                Database.updatePointForDonation(username,newPoint);
 
                             }
                         }

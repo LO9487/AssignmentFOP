@@ -8,10 +8,10 @@ public class User extends JFrame {
     private JLabel lblEmail, lblUsername, lblPassword, lblRegDate, lblPoints;
     private JTextField txtEmail, txtUsername, txtRegDate, txtPoints;
     private JPasswordField txtPassword;
-    private JButton btnShowPassword;
+    private JButton btnShowPassword, btnChangePassword;
 
     public User(String email) {
-        setLayout(new GridLayout(6, 2));
+        setLayout(new GridLayout(7, 2));
 
         lblEmail = new JLabel("Email:");
         lblUsername = new JLabel("Username:");
@@ -40,6 +40,14 @@ public class User extends JFrame {
             }
         });
 
+        btnChangePassword = new JButton("Change Password");
+        btnChangePassword.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChangePasswordPage(email).setVisible(true);
+            }
+        });
+
         add(lblEmail);
         add(txtEmail);
         add(lblUsername);
@@ -48,6 +56,9 @@ public class User extends JFrame {
         add(txtPassword);
         add(new JLabel());  // Empty space
         add(btnShowPassword);
+        add(new JLabel());  // Empty space
+        add(btnChangePassword);
+
         add(lblRegDate);
         add(txtRegDate);
         add(lblPoints);
@@ -104,3 +115,45 @@ public class User extends JFrame {
         return plainText.toString();
     }
 }
+class ChangePasswordPage extends JFrame {
+    private JPasswordField txtOldPassword, txtNewPassword, txtConfirmPassword;
+    private JButton btnConfirm;
+
+    public ChangePasswordPage(String email) {
+        setTitle("Setting new password");
+        setSize(400, 300);
+        setLayout(new GridLayout(4, 2));
+
+        add(new JLabel("Old Password:"));
+        txtOldPassword = new JPasswordField();
+        add(txtOldPassword);
+
+        add(new JLabel("New Password:"));
+        txtNewPassword = new JPasswordField();
+        add(txtNewPassword);
+
+        add(new JLabel("Confirm New Password:"));
+        txtConfirmPassword = new JPasswordField();
+        add(txtConfirmPassword);
+
+        btnConfirm = new JButton("Confirm");
+        btnConfirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Database db = new Database();
+                String oldPassword = new String(txtOldPassword.getPassword());
+                String newPassword = new String(txtNewPassword.getPassword());
+                String confirmPassword = new String(txtConfirmPassword.getPassword());
+
+                if (db.checkUser(email,oldPassword)==1) {
+                    JOptionPane.showMessageDialog(null, "The old password is wrong");
+                } else if (!newPassword.equals(confirmPassword)) {
+                    JOptionPane.showMessageDialog(null, "New password is not equal");
+                } else {
+                    db.updatePassword(email,newPassword);
+                    JOptionPane.showMessageDialog(null, "Your password has been updated");
+                }
+            }
+        });
+        add(btnConfirm);
+    }}

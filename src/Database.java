@@ -104,6 +104,35 @@ public class Database {
         }
     }
 
+    public void updatePassword(String email, String password){
+        try {
+            int shift = 3;
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*() ";
+
+            StringBuilder cipherText = new StringBuilder();
+            for (int i = 0; i < password.length(); i++) {
+                int charPosition = alphabet.indexOf(password.charAt(i));
+                if (charPosition == -1) {
+                    throw new IllegalArgumentException("Invalid character in password");
+                }
+                int keyValue = (shift + charPosition) % alphabet.length();
+                char replaceVal = alphabet.charAt(keyValue);
+                cipherText.append(replaceVal);
+            }
+            String cipherPassword = cipherText.toString();
+
+            String query ="UPDATE users SET password = ? WHERE email = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, cipherPassword);  // Store the ciphered password
+                stmt.setString(2, email);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void updatePointForDonation(String username, int newPoint){
         try{
             try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "Lojiakeng87")){
@@ -207,21 +236,6 @@ public class Database {
 
     }
 
-    public void saveXpUseEmail(String email, int point){
-//        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jdbc-user", "root", "")){
-        String query= "UPDATE users SET xp = ?,xpLastUpdate =CURRENT_TIMESTAMP WHERE email=?";
-        try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
-            preparedStatement.setInt(1,point);
-            preparedStatement.setString(2,email);
-            preparedStatement.executeUpdate();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-
-            System.out.println("Point updated successfully");
-
-
-        }
-    }
 
     public LocalDate getRegistrationDate(String email) {
         String query = "SELECT registration_date FROM users WHERE email = ?";
