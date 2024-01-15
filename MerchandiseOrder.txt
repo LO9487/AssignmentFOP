@@ -6,3 +6,10 @@ Jonas orders 1 Merc- 1 to Jalan Merdeka
 Jonas orders 1 Merc- 1 to Jalan Asia
 Jonas orders 2 Merc- 1 to 12, Jalan Mewah
 Jonas orders 10 Merc- 4 to 10, Jalan Sentosa
+Lo orders 1 Merc- 1 to 2, Jalan Bunga Ros
+Lo orders 232 Merc- 2 to No 69, Jalan Gay 12/12/12
+Lo orders 12345 Merc- 4 to gay
+Lyw orders 1 Merc- 1 to um
+Lyw orders -1 Merc- 1 to um
+Lyw orders -5 Merc- 4 to um
+Lo orders 2 Merc- 2 to 2, Jalan bunha

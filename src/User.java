@@ -99,7 +99,7 @@ public class User extends JFrame {
 
     private String decryptPassword(String cipherPassword) {
         int shift = 3;
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()";
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()<>[]{}_-=+;:| ";
         StringBuilder plainText = new StringBuilder();
 
         for (int i = 0; i < cipherPassword.length(); i++) {

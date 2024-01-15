@@ -192,8 +192,7 @@ public class TriviaQuestion {
     }
 
     private List<String> separateChoices(String option) {
-        // Implement this method based on your option format
-        // For simplicity, assuming the options are comma-separated
+
         String[] choicesArray = option.split(",");
         List<String> choices = new ArrayList<>();
         for (String choice : choicesArray) {

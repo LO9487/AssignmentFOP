@@ -23,7 +23,7 @@ public class Database {
         try {
             int shift = 3;
 
-            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*() ";
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()<>[]{}_-=+;:| ";
 
             StringBuilder cipherText = new StringBuilder();
             for (int i = 0; i < password.length(); i++) {
@@ -53,7 +53,7 @@ public class Database {
 
             int shift = 3;
 
-            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()";
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()<>[]{}_-=+;:| ";
 
             StringBuilder cipherText = new StringBuilder();
             for (int i = 0; i < password.length(); i++) {
@@ -107,7 +107,7 @@ public class Database {
     public void updatePassword(String email, String password){
         try {
             int shift = 3;
-            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*() ";
+            String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,.!?@#$%^&*()<>[]{}_-=+;:| ";
 
             StringBuilder cipherText = new StringBuilder();
             for (int i = 0; i < password.length(); i++) {
